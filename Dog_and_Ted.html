@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>泰德與流浪犬</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans relative">
+    <!-- Scene 1: Opening -->
+    <div id="scene1" class="scene active flex flex-col justify-center items-center w-screen h-screen bg-cover bg-center relative" style="background-image: url('https://via.placeholder.com/1920x1080');">
+        <div class="bg-white bg-opacity-75 px-8 py-6 rounded shadow-lg text-center">
+            <h1 class="text-4xl font-bold text-gray-800">在垃圾場中的泰德</h1>
+            <p class="text-gray-700 mt-4">泰德靜靜地躺在垃圾堆裡，身邊只有冷風和烏鴉聲陪伴。</p>
+            <button class="mt-6 px-4 py-2 bg-yellow-300 text-gray-800 font-bold rounded hover:bg-yellow-400" onclick="nextScene(2)">下一步</button>
+        </div>
+    </div>
+
+    <!-- Scene 2: Stray Dog Appears -->
+    <div id="scene2" class="scene hidden flex flex-col justify-center items-center w-screen h-screen bg-cover bg-center relative" style="background-image: url('https://via.placeholder.com/1920x1080');">
+        <div class="bg-white bg-opacity-75 px-8 py-6 rounded shadow-lg text-center">
+            <h1 class="text-4xl font-bold text-gray-800">流浪狗的出現</h1>
+            <p class="text-gray-700 mt-4">垃圾場來了一隻瘦骨嶙峋的流浪狗，牠開始尋找食物。</p>
+            <button class="mt-6 px-4 py-2 bg-yellow-300 text-gray-800 font-bold rounded hover:bg-yellow-400" onclick="nextScene(3)">下一步</button>
+        </div>
+    </div>
+
+    <!-- Scene 3: Companionship -->
+    <div id="scene3" class="scene hidden flex flex-col justify-center items-center w-screen h-screen bg-cover bg-center relative" style="background-image: url('https://via.placeholder.com/1920x1080');">
+        <div class="bg-white bg-opacity-75 px-8 py-6 rounded shadow-lg text-center">
+            <h1 class="text-4xl font-bold text-gray-800">陪伴的力量</h1>
+            <p class="text-gray-700 mt-4">流浪狗小心翼翼地將泰德叼到避風角落，從此牠們成了彼此唯一的夥伴。</p>
+            <button class="mt-6 px-4 py-2 bg-yellow-300 text-gray-800 font-bold rounded hover:bg-yellow-400" onclick="nextScene(4)">下一步</button>
+        </div>
+    </div>
+
+    <!-- Scene 4: The Journey -->
+    <div id="scene4" class="scene hidden flex flex-col justify-center items-center w-screen h-screen bg-cover bg-center relative" style="background-image: url('https://via.placeholder.com/1920x1080');">
+        <div class="bg-white bg-opacity-75 px-8 py-6 rounded shadow-lg text-center">
+            <h1 class="text-4xl font-bold text-gray-800">流浪狗的夢想</h1>
+            <p class="text-gray-700 mt-4">流浪狗決定帶著泰德朝小鎮出發，希望找到新家。</p>
+            <button class="mt-6 px-4 py-2 bg-yellow-300 text-gray-800 font-bold rounded hover:bg-yellow-400" onclick="nextScene(5)">下一步</button>
+        </div>
+    </div>
+
+    <!-- Scene 5: Sacrifice and New Beginning -->
+    <div id="scene5" class="scene hidden flex flex-col justify-center items-center w-screen h-screen bg-cover bg-center relative" style="background-image: url('https://via.placeholder.com/1920x1080');">
+        <div class="bg-white bg-opacity-75 px-8 py-6 rounded shadow-lg text-center">
+            <h1 class="text-4xl font-bold text-gray-800">犧牲與重生</h1>
+            <p class="text-gray-700 mt-4">小鎮居民發現了泰德與流浪狗的情誼，給了泰德一個新家。</p>
+            <button class="mt-6 px-4 py-2 bg-yellow-300 text-gray-800 font-bold rounded hover:bg-yellow-400" onclick="restartStory()">重新開始</button>
+        </div>
+    </div>
+
+    <script>
+        function nextScene(sceneNumber) {
+            document.querySelectorAll('.scene').forEach(scene => {
+                scene.classList.add('hidden');
+            });
+            document.getElementById(`scene${sceneNumber}`).classList.remove('hidden');
+        }
+
+        function restartStory() {
+            nextScene(1);
+        }
+    </script>
+</body>
+</html>
