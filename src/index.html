@@ -1,85 +1,276 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>泰德與流浪犬</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 font-sans relative">
-    <!-- Scene 1: Opening -->
-    <div id="scene1" class="scene p-8 p-8 active flex flex-col justify-end items-center w-screen h-screen bg-cover bg-center relative" style="background-image: url('image/1.png');">
-        <div class="bg-black bg-opacity-75 px-8 py-6 rounded shadow-lg text-center">
-            <h1 class="text-4xl font-bold text-gray-100 text-left">在垃圾場中的泰德</h1>
-            <p class="text-gray-200 mt-4 text-left">泰德靜靜地躺在垃圾堆裡，身邊只有冷風和烏鴉聲陪伴，垃圾場來了一隻瘦骨嶙峋的流浪狗尋找食物偶然看到了泰德。牠湊上前，用鼻子嗅了嗅，然後小心翼翼地把牠叼到一個避風的角落。從那天起，泰德和流浪狗成了彼此唯一的陪伴。
-</p>
-            <button class="mt-6 px-4 py-2 bg-yellow-300 text-gray-700 font-bold rounded hover:bg-yellow-400" onclick="nextScene(2)">下一步</button>
-        </div>
-    </div>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>泰德與流浪犬</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+	</head>
+	<body class="bg-gray-100 font-sans relative">
+		<!-- 音樂播放器 -->
+		<audio id="backgroundMusic" loop>
+			<source src="audio/漫漫-弦樂版.mp3" type="audio/mp3" />
+			Your browser does not support the audio element.
+		</audio>
 
-    <!-- Scene 2: Stray Dog Appears -->
-    <div id="scene2" class="scene p-8 hidden flex flex-col justify-end items-center w-screen h-screen bg-cover bg-center relative" style="background-image: url('image/2.png');">
-        <div class="bg-black bg-opacity-75 px-8 py-6 rounded shadow-lg text-center">
-            <h1 class="text-4xl font-bold text-gray-100 text-left">"他也曾經是別人的寶貝"</h1>
-            <p class="text-gray-200 mt-4 text-left">泰德也曾經是某個小女孩的心愛玩具，但隨著時間流逝，女孩長大後，泰德被拋棄了。牠柔軟的毛髮已經髒亂，眼珠子掉了一隻，身上的縫線也鬆開了，看起來就像垃圾一樣。</p>
-            <button class="mt-6 px-4 py-2 bg-yellow-300 text-gray-700 font-bold rounded hover:bg-yellow-400" onclick="nextScene(3)">下一步</button>
-        </div>
-    </div>
+	<!-- 音樂建議提示 -->
+	<div
+		id="musicSuggestion"
+		class="absolute top-8 left-1/2 transform -translate-x-1/2 bg-black text-gray-100 bg-opacity-50 px-6 py-4 rounded shadow-lg text-center z-50"
+	>
+		<p>建議播放背景音樂以獲得更好的體驗。</p>
+		<button
+			class="mt-2 px-4 py-2 bg-yellow-300 text-gray-700 font-bold rounded hover:bg-yellow-400"
+			onclick="playMusic()"
+		>
+			播放音樂
+		</button>
+	</div>
 
-    <!-- Scene 3: Companionship -->
-    <div id="scene3" class="scene p-8 hidden flex flex-col justify-end items-center w-screen h-screen bg-cover bg-center relative" style="background-image: url('image/3.png');">
-        <div class="bg-black bg-opacity-75 px-8 py-6 rounded shadow-lg text-center">
-            <h1 class="text-4xl font-bold text-gray-100 text-left">陪伴的力量</h1>
-            <p class="text-gray-200 mt-4 text-left">流浪狗小心翼翼地將泰德叼到避風角落，從此牠們成了彼此唯一的夥伴。每個夜晚，流浪狗都會把泰德當成枕頭，用牠破舊的身體擋住寒冷的風，然後安然入睡。而泰德，則默默地記住了這一切。</p>
-            <button class="mt-6 px-4 py-2 bg-yellow-300 text-gray-700 font-bold rounded hover:bg-yellow-400" onclick="nextScene(4)">下一步</button>
-        </div>
-    </div>
+		<!-- 音樂控制按鈕 -->
+		<button
+			type="button"
+			title="音樂控制按鈕"
+			id="musicControl"
+			class="absolute aspect-square top-4 right-4 bg-stone-900 text-gray-100 font-bold rounded-full px-4 py-2 hover:bg-stone-800 bg-opacity-75 hover:bg-opacity-75 z-50 flex items-center justify-center"
+		>
+			<svg
+				id="playIcon"
+				xmlns="http://www.w3.org/2000/svg"
+				class="h-6 w-6 hidden"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+				stroke-width="2"
+			>
+				<path
+					strokeLinecap="round"
+					strokeLinejoin="round"
+					d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z"
+				/>
+			</svg>
+			<svg
+				id="pauseIcon"
+				xmlns="http://www.w3.org/2000/svg"
+				class="h-6 w-6"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+				stroke-width="2"
+			>
+				<path
+					strokeLinecap="round"
+					strokeLinejoin="round"
+					d="M15.75 5.25v13.5m-7.5-13.5v13.5"
+				/>
+			</svg>
+		</button>
+		<!-- Scene 1: Opening -->
+		<div
+			id="scene1"
+			class="scene p-8 p-8 active flex flex-col justify-end items-center w-screen h-screen bg-cover bg-center relative"
+			style="background-image: url(&quot;image/1.png&quot;)"
+		>
+			<div
+				class="bg-black bg-opacity-75 px-8 py-6 rounded shadow-lg text-center"
+			>
+				<h1 class="text-4xl font-bold text-gray-100 text-left">
+					在垃圾場中的泰德
+				</h1>
+				<p class="text-gray-200 mt-4 text-left">
+					泰德靜靜地躺在垃圾堆裡，身邊只有冷風和烏鴉聲陪伴，垃圾場來了一隻瘦骨嶙峋的流浪狗尋找食物偶然看到了泰德。牠湊上前，用鼻子嗅了嗅，然後小心翼翼地把牠叼到一個避風的角落。從那天起，泰德和流浪狗成了彼此唯一的陪伴。
+				</p>
+				<button
+					class="mt-6 px-4 py-2 bg-yellow-300 text-gray-700 font-bold rounded hover:bg-yellow-400"
+					onclick="nextScene(2)"
+				>
+					下一步
+				</button>
+			</div>
+		</div>
 
-    <!-- Scene 4: The Journey -->
-    <div id="scene4" class="scene p-8 hidden flex flex-col justify-end items-center w-screen h-screen bg-cover bg-center relative" style="background-image: url('image/4.png');">
-        <div class="bg-black bg-opacity-75 px-8 py-6 rounded shadow-lg text-center">
-            <h1 class="text-4xl font-bold text-gray-100 text-left">流浪狗的夢想</h1>
-            <p class="text-gray-200 mt-4 text-left">流浪狗決定帶著泰德朝小鎮出發，希望找到新家。「也許那裡有吃的，也許……我們能找到新家。」流浪狗咬著泰德，用疲憊的身體一步一步朝小鎮走去。</p>
-            <button class="mt-6 px-4 py-2 bg-yellow-300 text-gray-700 font-bold rounded hover:bg-yellow-400" onclick="nextScene(5)">下一步</button>
-        </div>
-    </div>
+		<!-- Scene 2: Stray Dog Appears -->
+		<div
+			id="scene2"
+			class="scene p-8 hidden flex flex-col justify-end items-center w-screen h-screen bg-cover bg-center relative"
+			style="background-image: url(&quot;image/2.png&quot;)"
+		>
+			<div
+				class="bg-black bg-opacity-75 px-8 py-6 rounded shadow-lg text-center"
+			>
+				<h1 class="text-4xl font-bold text-gray-100 text-left">
+					"他也曾經是別人的寶貝"
+				</h1>
+				<p class="text-gray-200 mt-4 text-left">
+					泰德也曾經是某個小女孩的心愛玩具，但隨著時間流逝，女孩長大後，泰德被拋棄了。牠柔軟的毛髮已經髒亂，眼珠子掉了一隻，身上的縫線也鬆開了，看起來就像垃圾一樣。
+				</p>
+				<button
+					class="mt-6 px-4 py-2 bg-yellow-300 text-gray-700 font-bold rounded hover:bg-yellow-400"
+					onclick="nextScene(3)"
+				>
+					下一步
+				</button>
+			</div>
+		</div>
 
-    <!-- Scene 5: Sacrifice and New Beginning -->
-    <div id="scene5" class="scene p-8 hidden flex flex-col justify-end items-center w-screen h-screen bg-cover bg-center relative" style="background-image: url('image/5.png');">
-        <div class="bg-black bg-opacity-75 px-8 py-6 rounded shadow-lg text-center">
-            <h1 class="text-4xl font-bold text-gray-100 text-left">遙遠的路途</h1>
-            <p class="text-gray-200 mt-4 text-left">路程比想像中更遠，雪越下越大，流浪狗的步伐越來越沉重，腳印深深地陷在雪裡。流浪狗走到沒有力氣向前邁步了...他輕輕地放下泰德，用最後一點力氣舔了舔牠，低聲說：「對不起，泰德……我們沒辦法一起走下去了。」</p>
-            <button class="mt-6 px-4 py-2 bg-yellow-300 text-gray-700 font-bold rounded hover:bg-yellow-400" onclick="nextScene(6)">重新開始</button>
-        </div>
-    </div>
+		<!-- Scene 3: Companionship -->
+		<div
+			id="scene3"
+			class="scene p-8 hidden flex flex-col justify-end items-center w-screen h-screen bg-cover bg-center relative"
+			style="background-image: url(&quot;image/3.png&quot;)"
+		>
+			<div
+				class="bg-black bg-opacity-75 px-8 py-6 rounded shadow-lg text-center"
+			>
+				<h1 class="text-4xl font-bold text-gray-100 text-left">陪伴的力量</h1>
+				<p class="text-gray-200 mt-4 text-left">
+					流浪狗小心翼翼地將泰德叼到避風角落，從此牠們成了彼此唯一的夥伴。每個夜晚，流浪狗都會把泰德當成枕頭，用牠破舊的身體擋住寒冷的風，然後安然入睡。而泰德，則默默地記住了這一切。
+				</p>
+				<button
+					class="mt-6 px-4 py-2 bg-yellow-300 text-gray-700 font-bold rounded hover:bg-yellow-400"
+					onclick="nextScene(4)"
+				>
+					下一步
+				</button>
+			</div>
+		</div>
 
-    <div id="scene6" class="scene p-8 hidden flex flex-col justify-end items-center w-screen h-screen bg-cover bg-center relative" style="background-image: url('image/7.png');">
-        <div class="bg-black bg-opacity-75 px-8 py-6 rounded shadow-lg text-center">
-            <h1 class="text-4xl font-bold text-gray-100 text-left">最珍貴的朋友</h1>
-            <p class="text-gray-200 mt-4 text-left">第二天清晨，小鎮裡的居民發現了一隻死去的流浪狗，牠蜷縮著身體，用身體擋住了寒風，懷裡還抱著一隻破舊的泰迪熊。那隻泰迪熊看起來雖然破爛，但被抱得很緊，彷彿是流浪狗最珍貴的東西。</p>
-            <button class="mt-6 px-4 py-2 bg-yellow-300 text-gray-700 font-bold rounded hover:bg-yellow-400" onclick="nextScene(7)">重新開始</button>
-        </div>
-    </div>
+		<!-- Scene 4: The Journey -->
+		<div
+			id="scene4"
+			class="scene p-8 hidden flex flex-col justify-end items-center w-screen h-screen bg-cover bg-center relative"
+			style="background-image: url(&quot;image/4.png&quot;)"
+		>
+			<div
+				class="bg-black bg-opacity-75 px-8 py-6 rounded shadow-lg text-center"
+			>
+				<h1 class="text-4xl font-bold text-gray-100 text-left">流浪狗的夢想</h1>
+				<p class="text-gray-200 mt-4 text-left">
+					流浪狗決定帶著泰德朝小鎮出發，希望找到新家。「也許那裡有吃的，也許……我們能找到新家。」流浪狗咬著泰德，用疲憊的身體一步一步朝小鎮走去。
+				</p>
+				<button
+					class="mt-6 px-4 py-2 bg-yellow-300 text-gray-700 font-bold rounded hover:bg-yellow-400"
+					onclick="nextScene(5)"
+				>
+					下一步
+				</button>
+			</div>
+		</div>
 
-    <div id="scene7" class="scene p-8 hidden flex flex-col justify-end items-center w-screen h-screen bg-cover bg-center relative" style="background-image: url('image/9.png');">
-        <div class="bg-black bg-opacity-75 px-8 py-6 rounded shadow-lg text-center">
-            <h1 class="text-4xl font-bold text-gray-100 text-left">犧牲與重生</h1>
-            <p class="text-gray-200 mt-4 text-left">居民們將流浪狗埋在了鎮邊的一棵樹下，而那隻泰迪熊則被一個孩子帶回了家。他輕輕擦乾泰德身上的污垢，縫好了牠的破損處讓牠重新恢復了乾淨和完整。他會在天氣好時帶他野餐，天氣冷時說故事給他聽，從那天起泰德又回到了溫暖的懷抱。</p>
-            <button class="mt-6 px-4 py-2 bg-yellow-300 text-gray-700 font-bold rounded hover:bg-yellow-400" onclick="restartStory()">重新開始</button>
-        </div>
-    </div>
+		<!-- Scene 5: Sacrifice and New Beginning -->
+		<div
+			id="scene5"
+			class="scene p-8 hidden flex flex-col justify-end items-center w-screen h-screen bg-cover bg-center relative"
+			style="background-image: url(&quot;image/5.png&quot;)"
+		>
+			<div
+				class="bg-black bg-opacity-75 px-8 py-6 rounded shadow-lg text-center"
+			>
+				<h1 class="text-4xl font-bold text-gray-100 text-left">遙遠的路途</h1>
+				<p class="text-gray-200 mt-4 text-left">
+					路程比想像中更遠，雪越下越大，流浪狗的步伐越來越沉重，腳印深深地陷在雪裡。流浪狗走到沒有力氣向前邁步了...他輕輕地放下泰德，用最後一點力氣舔了舔牠，低聲說：「對不起，泰德……我們沒辦法一起走下去了。」
+				</p>
+				<button
+					class="mt-6 px-4 py-2 bg-yellow-300 text-gray-700 font-bold rounded hover:bg-yellow-400"
+					onclick="nextScene(6)"
+				>
+					重新開始
+				</button>
+			</div>
+		</div>
 
-    <script>
-        function nextScene(sceneNumber) {
-            document.querySelectorAll('.scene').forEach(scene => {
-                scene.classList.add('hidden');
-            });
-            document.getElementById(`scene${sceneNumber}`).classList.remove('hidden');
-        }
+		<div
+			id="scene6"
+			class="scene p-8 hidden flex flex-col justify-end items-center w-screen h-screen bg-cover bg-center relative"
+			style="background-image: url(&quot;image/7.png&quot;)"
+		>
+			<div
+				class="bg-black bg-opacity-75 px-8 py-6 rounded shadow-lg text-center"
+			>
+				<h1 class="text-4xl font-bold text-gray-100 text-left">最珍貴的朋友</h1>
+				<p class="text-gray-200 mt-4 text-left">
+					第二天清晨，小鎮裡的居民發現了一隻死去的流浪狗，牠蜷縮著身體，用身體擋住了寒風，懷裡還抱著一隻破舊的泰迪熊。那隻泰迪熊看起來雖然破爛，但被抱得很緊，彷彿是流浪狗最珍貴的東西。
+				</p>
+				<button
+					class="mt-6 px-4 py-2 bg-yellow-300 text-gray-700 font-bold rounded hover:bg-yellow-400"
+					onclick="nextScene(7)"
+				>
+					重新開始
+				</button>
+			</div>
+		</div>
 
-        function restartStory() {
-            nextScene(1);
-        }
-    </script>
-</body>
+		<div
+			id="scene7"
+			class="scene p-8 hidden flex flex-col justify-end items-center w-screen h-screen bg-cover bg-center relative"
+			style="background-image: url(&quot;image/9.png&quot;)"
+		>
+			<div
+				class="bg-black bg-opacity-75 px-8 py-6 rounded shadow-lg text-center"
+			>
+				<h1 class="text-4xl font-bold text-gray-100 text-left">犧牲與重生</h1>
+				<p class="text-gray-200 mt-4 text-left">
+					居民們將流浪狗埋在了鎮邊的一棵樹下，而那隻泰迪熊則被一個孩子帶回了家。他輕輕擦乾泰德身上的污垢，縫好了牠的破損處讓牠重新恢復了乾淨和完整。他會在天氣好時帶他野餐，天氣冷時說故事給他聽，從那天起泰德又回到了溫暖的懷抱。
+				</p>
+				<button
+					class="mt-6 px-4 py-2 bg-yellow-300 text-gray-700 font-bold rounded hover:bg-yellow-400"
+					onclick="restartStory()"
+				>
+					重新開始
+				</button>
+			</div>
+		</div>
+
+		<script>
+		// 控制音樂播放/暫停
+		const musicControl = document.getElementById("musicControl");
+		const backgroundMusic = document.getElementById("backgroundMusic");
+		const playIcon = document.getElementById("playIcon");
+		const pauseIcon = document.getElementById("pauseIcon");
+		const musicSuggestion = document.getElementById("musicSuggestion");
+		let isPlaying = false;
+
+		// 播放音樂並隱藏提示框
+		function playMusic() {
+			backgroundMusic.play();
+			musicSuggestion.classList.add("hidden");
+			playIcon.classList.add("hidden");
+			pauseIcon.classList.remove("hidden");
+			isPlaying = true;
+		}
+
+		// 點擊音樂控制按鈕
+		musicControl.addEventListener("click", () => {
+			if (isPlaying) {
+				backgroundMusic.pause();
+				playIcon.classList.remove("hidden");
+				pauseIcon.classList.add("hidden");
+			} else {
+				backgroundMusic.play();
+				playIcon.classList.add("hidden");
+				pauseIcon.classList.remove("hidden");
+			}
+			isPlaying = !isPlaying;
+		});
+
+		// 自動隱藏提示框 5 秒後
+		setTimeout(() => {
+			musicSuggestion.classList.add("hidden");
+		}, 5000);
+
+		// 切換場景
+		function nextScene(sceneNumber) {
+			document.querySelectorAll(".scene").forEach((scene) => {
+				scene.classList.add("hidden");
+			});
+			document
+				.getElementById(`scene${sceneNumber}`)
+				.classList.remove("hidden");
+		}
+
+		function restartStory() {
+			nextScene(1);
+		}
+	</script>
+	</body>
 </html>
